@@ -132,7 +132,7 @@ for i = 1:size(cuboids, 1)
     vertices = (R * vertices')';
 
     % Translation to original location
-    vertices = vertices + [x_ctr, y_ctr, +z_ctr/2];
+    vertices = vertices + [x_ctr, y_ctr, +z_ctr];
     
     % Index of the line connecting the vertices
     edges = [1,2; 2,3; 3,4; 4,1;    % up side
@@ -180,7 +180,7 @@ for i = 1:size(cuboids, 1)
 
     % Notation distance and velocity
     topCenter = [mean(vertices(1:4, 1)), mean(vertices(1:4, 2)), max(vertices(1:4, 3))];
-    textData = {id + " " + className + " " + num2str(round(dist, 2)) + "m"};
+    textData = {id + " " + classNum + " " + num2str(round(dist, 2)) + "m"};
 
 
     line(ax, 'XData', [0, 0.8],'YData', [0, 0],'Color', 'r', 'LineWidth', 1);

@@ -100,7 +100,7 @@ for i = 1:length(LiDAR_file_list)
     %-------------------------------Object Detection Info-------------------------------%
     %-----------------------------------------------------------------------------------%
     % Results from 3D DL model
-    pause(0.1)
+    pause(1)
     L_bbox = G_bbox;
     L_id = G_id;
     L_cls = G_cls;

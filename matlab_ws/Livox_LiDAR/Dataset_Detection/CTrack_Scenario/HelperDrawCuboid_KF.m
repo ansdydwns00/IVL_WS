@@ -54,12 +54,12 @@ for i = 1:size(cuboids, 1)
     id = modelInfo.ID{i};
     classNum = modelInfo.Class{i};
     
-    % 클래스 번호를 이름으로 변환
-    if isKey(classNames, classNum)
-        className = classNames(classNum);
-    else
-        className = 'Unknown';
-    end
+    % % 클래스 번호를 이름으로 변환
+    % if isKey(classNames, classNum)
+    %     className = classNames(classNum);
+    % else
+    %     className = 'Unknown';
+    % end
 
 
     % ID에 따른 색상 할당
@@ -171,7 +171,7 @@ for i = 1:size(cuboids, 1)
 
     % Notation distance and velocity
     topCenter = [mean(vertices(1:4, 1)), mean(vertices(1:4, 2)), max(vertices(1:4, 3))];
-    textData = {id + " " + className + " " + num2str(round(dist, 2)) + "m"};
+    textData = {id + " " + classNum + " " + num2str(round(dist, 2)) + "m"};
 
 
     line(ax, 'XData', [0, 0.8],'YData', [0, 0],'Color', 'r', 'LineWidth', 1);

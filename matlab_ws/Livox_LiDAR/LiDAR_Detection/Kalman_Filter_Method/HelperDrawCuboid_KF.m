@@ -171,7 +171,7 @@ for i = 1:size(cuboids, 1)
 
     % Notation distance and velocity
     topCenter = [mean(vertices(1:4, 1)), mean(vertices(1:4, 2)), max(vertices(1:4, 3))];
-    textData = {id + " " + className + " " + num2str(round(dist, 2)) + "m"};
+    textData = {id + " " + classNum + " " + num2str(round(dist, 2)) + "m"};
 
 
     line(ax, 'XData', [0, 0.8],'YData', [0, 0],'Color', 'r', 'LineWidth', 1);
