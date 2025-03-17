@@ -1,4 +1,4 @@
-function ptCld = HelperPtCldProcessing_KF(pt,roi,gridStep)
+function ptCld = KITTI_HelperPtCldProcessing_KF(pt, roi, gridStep)
     
     % pointCloud ROI 
     indices = findPointsInROI(pt, roi);
@@ -7,7 +7,7 @@ function ptCld = HelperPtCldProcessing_KF(pt,roi,gridStep)
     % pointCloud Downsampling
     % ptCld = pcdownsample(ptCld,"gridAverage",gridStep);
     
-    % % Remove ground plane
+    % Remove ground plane
     % groundPtsIndex = segmentGroundSMRF(ptCld,'SlopeThreshold',0.15,'ElevationThreshold',0.1,'ElevationScale',1.25);
     % ptCld = select(ptCld,~groundPtsIndex);
     

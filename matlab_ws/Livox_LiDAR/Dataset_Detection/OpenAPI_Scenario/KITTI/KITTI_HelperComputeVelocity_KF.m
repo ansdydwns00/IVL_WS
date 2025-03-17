@@ -1,4 +1,4 @@
-function [VelocityInfo, OrientInfo] = HelperComputeVelocity_KF(ModelInfo)
+function [VelocityInfo, OrientInfo] = KITTI_HelperComputeVelocity_KF(ModelInfo)
  
 
     VelocityInfo = zeros(0,1);

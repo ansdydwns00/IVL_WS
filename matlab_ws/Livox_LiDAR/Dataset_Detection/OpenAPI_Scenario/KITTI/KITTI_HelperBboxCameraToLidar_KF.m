@@ -1,4 +1,4 @@
-function frustumIndices = HelperBboxCameraToLidar_KF(bboxesCamera, ptCloudIn, intrinsics, tform, varargin)
+function frustumIndices = KITTI_HelperBboxCameraToLidar_KF(bboxesCamera, ptCloudIn, intrinsics, tform, varargin)
 
 narginchk(4,8);
 

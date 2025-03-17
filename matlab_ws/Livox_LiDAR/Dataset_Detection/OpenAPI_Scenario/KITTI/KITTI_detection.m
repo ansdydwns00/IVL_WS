@@ -8,6 +8,11 @@ global G_cls
 global G_vel
 global G_isTracking
 
+G_bbox = [];
+G_id = {};
+G_cls = {};
+G_vel = [];
+G_isTracking = []; 
 
 % Create a node for connection between MATLAB and ROS2
 Pub_Node = ros2node("/IVL_Pub");
@@ -27,11 +32,19 @@ clear KITTI_HelperDrawCuboid_KF
 
 
 
-% KITTI 
-LiDAR_folder_path = '/home/aiv/pcdet_ws/src/OpenPCDet/data/kitti/training/velodyne';
-Cam_folder_path = '/home/aiv/pcdet_ws/src/OpenPCDet/data/kitti/training/image_2';
-Calib_folder_path = '/home/aiv/pcdet_ws/src/OpenPCDet/data/kitti/training/calib';
-Label_folder_path = '/home/aiv/pcdet_ws/src/OpenPCDet/data/kitti/training/label_2';
+% KITTI 2D Object Tracking Dataset (실행 전 '새 볼륨' 연결 필요) - 연구실 본체 용
+LiDAR_folder_path   = '/media/aiv/새 볼륨/kitti/kitti_2d/training/velodyne/0000';
+Cam_folder_path     = '/media/aiv/새 볼륨/kitti/kitti_2d/training/image_02/0000';
+Calib_folder_path   = '/media/aiv/새 볼륨/kitti/kitti_2d/training/calib';
+Label_folder_path   = '/media/aiv/새 볼륨/kitti/kitti_2d/training/label_02';
+
+
+% KITTI 2D Object Tracking Dataset (실행 전 '새 볼륨' 연결 필요) - 연구실 노트북 용
+% LiDAR_folder_path   = '/home/aiv/pcdet_ws/src/AB3DMOT/data/KITTI/tracking/training/velodyne/0000';
+% Cam_folder_path     = '/home/aiv/pcdet_ws/src/AB3DMOT/data/KITTI/tracking/training/image_02/0000';
+% Calib_folder_path   = '/home/aiv/pcdet_ws/src/AB3DMOT/data/KITTI/tracking/training/calib';
+% Label_folder_path   = '/home/aiv/pcdet_ws/src/AB3DMOT/data/KITTI/tracking/training/label_02';
+    
 
 LiDAR_file_list = dir(fullfile(LiDAR_folder_path, '*.bin'));
 Cam_file_list = dir(fullfile(Cam_folder_path, '*.png'));
@@ -72,7 +85,6 @@ roi = [1, 70, -30, 30, -2, 1.5];
 
 % Downsampling
 gridStep = 0.1;
-
 %-----------------------------------------------------------------------------------%
 
 
@@ -87,36 +99,36 @@ for i = 1:length(LiDAR_file_list)
     ptCld = KITTI_readPtCld(LiDAR_folder_path, LiDAR_file_list, i);  
     
     % Preprocessing point clound (ROI, Downsampling, remove ground)
-    ptCloud_ps = HelperPtCldProcessing_KF(ptCld,roi, gridStep); 
+    ptCloud_ps = KITTI_HelperPtCldProcessing_KF(ptCld,roi, gridStep); 
     
     % Sending point cloud msg to ROS2 
-    msg_LiDAR = ros2message(pub.LiDAR);
-    msg_LiDAR.header.frame_id = 'map';
-    msg_LiDAR = rosWriteXYZ(msg_LiDAR,(ptCloud_ps.Location));
-    msg_LiDAR = rosWriteIntensity(msg_LiDAR,(ptCloud_ps.Intensity));
+    msg_LiDAR                   = ros2message(pub.LiDAR);
+    msg_LiDAR.header.frame_id   = 'map';
+    msg_LiDAR                   = rosWriteXYZ(msg_LiDAR,(ptCloud_ps.Location));
+    msg_LiDAR                   = rosWriteIntensity(msg_LiDAR,(ptCloud_ps.Intensity));
     send(pub.LiDAR,msg_LiDAR);
 
     %-----------------------------------------------------------------------------------%
     %-------------------------------Object Detection Info-------------------------------%
     %-----------------------------------------------------------------------------------%
     % Results from 3D DL model
-    pause(0.1)
-    L_bbox = G_bbox;
-    L_id = G_id;
-    L_cls = G_cls;
-    L_vel = G_vel;
-    L_isTracking = G_isTracking;
+    pause(0.4)
+    L_bbox          = G_bbox;
+    L_id            = G_id;
+    L_cls           = G_cls;
+    L_vel           = G_vel;
+    L_isTracking    = G_isTracking;
 
     % Calculate Object Distance & Velocity 
-    [Model, ModelInfo] = HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
-    [VelocityInfo, OrientInfo] = HelperComputeVelocity_KF(ModelInfo);
+    [Model, ModelInfo]          = KITTI_HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
+    [VelocityInfo, OrientInfo]  = KITTI_HelperComputeVelocity_KF(ModelInfo);
 
     %-----------------------------------------------------------------------------------%
     %-----------------------------------Visualization-----------------------------------%
     %-----------------------------------------------------------------------------------%
     % Display detection results
     view(player,ptCld)
-    HelperDeleteCuboid_KF(player.Axes)
+    KITTI_HelperDeleteCuboid_KF(player.Axes)
     KITTI_HelperDrawCuboid_KF(player.Axes, Model, ModelInfo, VelocityInfo, OrientInfo);    
 
     % elapsed_time = toc;

@@ -1,4 +1,4 @@
-function HelperDeleteCuboid_KF(ax)
+function KITTI_HelperDeleteCuboid_KF(ax)
 
     % Find all line & text objects in an Axes object
     lines = findall(ax, 'Type', 'line');
@@ -8,6 +8,4 @@ function HelperDeleteCuboid_KF(ax)
     delete(lines);
     delete(texts); 
 
-    
-    
 end
