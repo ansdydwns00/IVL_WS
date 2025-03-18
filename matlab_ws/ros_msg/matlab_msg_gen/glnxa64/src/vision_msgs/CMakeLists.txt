@@ -146,4 +146,8 @@ add_custom_command(
 				   )				   
 endforeach(file_i)
 ament_package()
+<<<<<<< HEAD
 # Generated on Mon Feb 17 17:53:46 2025
+=======
+# Generated on Mon Feb 17 17:40:33 2025
+>>>>>>> f636c77805dab8e29d6d4a020552a4442534fff2

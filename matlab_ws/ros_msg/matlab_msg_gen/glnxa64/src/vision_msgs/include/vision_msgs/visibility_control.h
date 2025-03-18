@@ -28,5 +28,9 @@
   #define VISION_MSGS_PUBLIC_TYPE
 #endif
 #endif  // VISION_MSGS__VISIBILITY_CONTROL_H_
+<<<<<<< HEAD
 // Generated 17-Feb-2025 17:53:46
+=======
+// Generated 17-Feb-2025 17:40:33
+>>>>>>> f636c77805dab8e29d6d4a020552a4442534fff2
  

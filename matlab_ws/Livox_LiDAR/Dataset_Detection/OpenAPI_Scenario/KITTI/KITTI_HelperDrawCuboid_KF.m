@@ -132,8 +132,13 @@ for i = 1:size(cuboids, 1)
     vertices = (R * vertices')';
 
     % Translation to original location
+<<<<<<< HEAD
     vertices = vertices + [x_ctr, y_ctr, z_ctr];
 
+=======
+    vertices = vertices + [x_ctr, y_ctr, +z_ctr];
+    
+>>>>>>> f636c77805dab8e29d6d4a020552a4442534fff2
     % Index of the line connecting the vertices
     edges = [1,2; 2,3; 3,4; 4,1;    % up side
              5,6; 6,7; 7,8; 8,5;    % down side
@@ -146,6 +151,48 @@ for i = 1:size(cuboids, 1)
                  'ZData', vertices(edges(j,:), 3), ...
                  'Color', cuboidColor, 'Linewidth', 1, 'Tag', 'detBox');
     end
+<<<<<<< HEAD
+=======
+    
+    
+    % % Notation Orientation
+    % bottomCenter = mean(vertices(5:8,:),1);
+    % markerLength = 0.1; % 마커 길이 (중심을 표현하는 작은 선)
+    % line(ax, 'XData', [bottomCenter(1) - markerLength, bottomCenter(1) + markerLength], ...
+    %          'YData', [bottomCenter(2), bottomCenter(2)], ...
+    %          'ZData', [bottomCenter(3), bottomCenter(3)], ...
+    %          'Color', 'y', 'LineWidth', 2); % X축 방향으로 작은 노란색 선
+    % 
+    % line(ax, 'XData', [bottomCenter(1), bottomCenter(1)], ...
+    %          'YData', [bottomCenter(2) - markerLength, bottomCenter(2) + markerLength], ...
+    %          'ZData', [bottomCenter(3), bottomCenter(3)], ...
+    %          'Color', 'y', 'LineWidth', 2); % Y축 방향으로 작은 노란색 선
+    % 
+    % 
+    % x_dir = orientInfo(i, 1); % orientInfo의 x 방향 벡터 값
+    % y_dir = orientInfo(i, 2); % orientInfo의 y 방향 벡터 값
+    % 
+    % directionVector = [x_dir; y_dir; 0];
+    % directionVector = directionVector / norm(directionVector); % 방향 벡터를 단위 벡터로 정규화
+    % 
+    % lineLength = 1.0; % 직선의 길이 (1m)
+    % lineEndPoint = bottomCenter + (lineLength * directionVector');
+    % 
+    % % 노란색 선을 bottom center로부터 방향 벡터를 따라 그리기
+    % line(ax, 'XData', [bottomCenter(1), lineEndPoint(1)], ...
+    %          'YData', [bottomCenter(2), lineEndPoint(2)], ...
+    %          'ZData', [bottomCenter(3), lineEndPoint(3)], ...
+    %          'Color', 'y', 'LineWidth', 1.5);
+
+
+
+    % Notation distance and velocity
+    topCenter = [mean(vertices(1:4, 1)), mean(vertices(1:4, 2)), max(vertices(1:4, 3))];
+    textData = {id + " " + classNum + " " + num2str(round(dist, 2)) + "m"};
+
+
+    line(ax, 'XData', [0, 0.8],'YData', [0, 0],'Color', 'r', 'LineWidth', 1);
+>>>>>>> f636c77805dab8e29d6d4a020552a4442534fff2
 
 
     %---- Notation Orientation

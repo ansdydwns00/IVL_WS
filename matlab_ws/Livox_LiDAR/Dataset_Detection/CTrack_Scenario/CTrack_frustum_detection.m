@@ -30,7 +30,7 @@ sub.lr_detection = ros2subscriber(Sub_Node,"/lr_detections","vision_msgs/Detecti
 % % test1014/sina2/set1
 % filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina2/set1/rosbag2_2024_10_14-15_36_49_0.db3';
 % % test1014/sina2/set2
-filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina2/set2/rosbag2_2024_10_14-15_37_45_0.db3';
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina2/set2/rosbag2_2024_10_14-15_37_45_0.db3';
 
 
 % % test1014/sina3/set1
@@ -45,7 +45,7 @@ filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina2/set2/rosbag2_20
 % filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina5/set1/rosbag2_2024_10_14-15_42_51_0.db3';
 
 % % test1015/set1
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1015/set1/rosbag2_2024_10_15-16_15_00_0.db3';
+filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1015/set1/rosbag2_2024_10_15-16_15_00_0.db3';
 % % test1015/set2
 % filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1015/set2/rosbag2_2024_10_15-16_15_56_0.db3';
 
@@ -68,7 +68,7 @@ else
     view_sz = lidar_sz;
 end
 
-bbox = load("test1014-scene2-set2.mat");
+bbox = load("test1015-scene1-set1.mat");
 bbox = bbox.data';
 %% 
 clear HelperDrawCuboid_KF
@@ -228,9 +228,9 @@ while true
     %-----------------------------------Visualization-----------------------------------%
     %-----------------------------------------------------------------------------------%
     
-    if ~isempty(l_bboxes)
-        img = insertObjectAnnotation(img,"rectangle",l_bboxes, repmat("Pedestrian",size(l_bboxes,1),1));
-    end
+    % if ~isempty(l_bboxes)
+    %     img = insertObjectAnnotation(img,"rectangle",l_bboxes, repmat("Pedestrian",size(l_bboxes,1),1));
+    % end
 
    
     % Display detection results

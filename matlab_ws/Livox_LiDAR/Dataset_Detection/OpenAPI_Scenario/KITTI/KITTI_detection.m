@@ -112,12 +112,21 @@ for i = 1:length(LiDAR_file_list)
     %-------------------------------Object Detection Info-------------------------------%
     %-----------------------------------------------------------------------------------%
     % Results from 3D DL model
+<<<<<<< HEAD
     pause(0.4)
     L_bbox          = G_bbox;
     L_id            = G_id;
     L_cls           = G_cls;
     L_vel           = G_vel;
     L_isTracking    = G_isTracking;
+=======
+    pause(1)
+    L_bbox = G_bbox;
+    L_id = G_id;
+    L_cls = G_cls;
+    L_vel = G_vel;
+    L_isTracking = G_isTracking;
+>>>>>>> f636c77805dab8e29d6d4a020552a4442534fff2
 
     % Calculate Object Distance & Velocity 
     [Model, ModelInfo]          = KITTI_HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
