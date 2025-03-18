@@ -168,17 +168,14 @@ for i = 1:size(cuboids, 1)
              'YData', [bottomCenter(2), lineEndPoint(2)], ...
              'ZData', [bottomCenter(3), lineEndPoint(3)], ...
              'Color', 'y', 'LineWidth', 1.5);
-
+    
     % Notation distance and velocity
     topCenter = [mean(vertices(1:4, 1)), mean(vertices(1:4, 2)), max(vertices(1:4, 3))];
     textData = {id + " " + classNum + " " + num2str(round(dist, 2)) + "m"};
-    % textData = {num2str(round(dist, 2)) + "m"};
-    % textData = {id + " " + className};
+
 
     line(ax, 'XData', [0, 0.8],'YData', [0, 0],'Color', 'r', 'LineWidth', 1);
-
     line(ax, 'XData', [0, 0],'YData', [0, 0.8],'Color', 'g', 'LineWidth', 1);
-
     line(ax, 'XData', [0, 0],'YData', [0 0],'ZData', [0.8, 0], 'Color', 'b', 'LineWidth', 1);
     
     % hasVelInfo = false;

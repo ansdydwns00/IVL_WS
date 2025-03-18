@@ -18,16 +18,23 @@ global G_vel
 global G_isTracking
 
 
+G_bbox = [];
+G_id = {};
+G_cls = {};
+G_vel = [];
+G_isTracking = []; 
+
+
 % Create a node for connection between MATLAB and ROS2
-Node = ros2node("/IVL");
-Sub_Node = ros2node("/IVL_Sub");
+Node        = ros2node("/IVL");
+Sub_Node    = ros2node("/IVL_Sub");
 
 % Create Subscribe Node
-sub.Yolo_track = ros2subscriber(Node,"/yolo/tracking","yolov8_msgs/DetectionArray",@HelperCallbackYolo_KF);
-sub.lr_detection = ros2subscriber(Sub_Node,"/lr_detections","vision_msgs/Detection3DArray",@HelperCallbackPCDet_KF);
+sub.Yolo_track      = ros2subscriber(Node,"/yolo/tracking","yolov8_msgs/DetectionArray",@HelperCallbackYolo_KF);
+sub.lr_detection    = ros2subscriber(Sub_Node,"/lr_detections","vision_msgs/Detection3DArray",@HelperCallbackPCDet_KF);
 
 % Create Publish Node
-pub.LiDAR = ros2publisher(Node,"/livox/lidar","sensor_msgs/PointCloud2");
+pub.LiDAR           = ros2publisher(Node,"/livox/lidar","sensor_msgs/PointCloud2");
 
 %% 
 clear HelperDrawCuboid_KF
@@ -50,7 +57,7 @@ camToLidar = invert(tform);
 %-----------------------------------------------------------------------------------%
 % Set x,y,z range of pcplayer
 xmin = 0;       xmax = 40;
-ymin = -7;     ymax = 7;
+ymin = -7;      ymax = 7;
 zmin = -2;      zmax = 1.5;
 
 % pointCloud viewer
@@ -138,33 +145,33 @@ while true
             
                 if ~isempty(frustumIndices{1})
     
-                    allValues = vertcat(frustumIndices{:});
-                    uniqueValues = unique(allValues);
+                    allValues       = vertcat(frustumIndices{:});
+                    uniqueValues    = unique(allValues);
                     
-                    tmpPC = select(ptCloud_ps,uniqueValues);
-                    msg_LiDAR = ros2message(pub.LiDAR);
-                    msg_LiDAR.header.frame_id = 'map';
-                    msg_LiDAR = rosWriteXYZ(msg_LiDAR,(tmpPC.Location));
-                    msg_LiDAR = rosWriteIntensity(msg_LiDAR,(tmpPC.Intensity));
+                    tmpPC                       = select(ptCloud_ps,uniqueValues);
+                    msg_LiDAR                   = ros2message(pub.LiDAR);
+                    msg_LiDAR.header.frame_id   = 'map';
+                    msg_LiDAR                   = rosWriteXYZ(msg_LiDAR,(tmpPC.Location));
+                    msg_LiDAR                   = rosWriteIntensity(msg_LiDAR,(tmpPC.Intensity));
                     send(pub.LiDAR,msg_LiDAR);
                 end
             end
             
-            % Results from 3D DL model
-            L_bbox = G_bbox;
-            L_id = G_id;
-            L_cls = G_cls;
-            L_vel = G_vel;
-            L_isTracking = G_isTracking;
+            
 
             %-----------------------------------------------------------------------------------%
             %-------------------------------Object Detection Info-------------------------------%
             %-----------------------------------------------------------------------------------%
-            % Calculate Object Distance 
-            [Model, ModelInfo] = HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
-           
-            % Calculate Object Velocity
-            [VelocityInfo, OrientInfo] = HelperComputeVelocity_KF(ModelInfo);
+            % Results from 3D DL model
+            L_bbox          = G_bbox;
+            L_id            = G_id;
+            L_cls           = G_cls;
+            L_vel           = G_vel;
+            L_isTracking    = G_isTracking;
+
+            % Calculate Object Distance & Velocity  
+            [Model, ModelInfo]          = HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
+            [VelocityInfo, OrientInfo]  = HelperComputeVelocity_KF(ModelInfo);
             
             %-----------------------------------------------------------------------------------%
             %-----------------------------------Visualization-----------------------------------%

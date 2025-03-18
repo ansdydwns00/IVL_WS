@@ -175,9 +175,7 @@ for i = 1:size(cuboids, 1)
 
 
     line(ax, 'XData', [0, 0.8],'YData', [0, 0],'Color', 'r', 'LineWidth', 1);
-
     line(ax, 'XData', [0, 0],'YData', [0, 0.8],'Color', 'g', 'LineWidth', 1);
-
     line(ax, 'XData', [0, 0],'YData', [0 0],'ZData', [0.8, 0], 'Color', 'b', 'LineWidth', 1);
 
     if hasVelInfo

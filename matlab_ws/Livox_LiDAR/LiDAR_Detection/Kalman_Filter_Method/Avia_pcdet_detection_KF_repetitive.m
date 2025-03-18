@@ -13,6 +13,12 @@ global G_cls
 global G_vel
 global G_isTracking
 
+G_bbox = [];
+G_id = {};
+G_cls = {};
+G_vel = [];
+G_isTracking = []; 
+
 
 % Create a node for connection between MATLAB and ROS2
 Pub_Node = ros2node("/IVL_Pub");
@@ -91,28 +97,28 @@ while true
             ptCloud_ps = HelperPtCldProcessing_KF(ptCloud,roi,gridStep); 
             
             % Sending point cloud msg to ROS2 
-            msg_LiDAR = ros2message(pub.LiDAR);
-            msg_LiDAR.header.frame_id = 'map';
-            msg_LiDAR = rosWriteXYZ(msg_LiDAR,(ptCloud_ps.Location));
-            msg_LiDAR = rosWriteIntensity(msg_LiDAR,(ptCloud_ps.Intensity));
+            msg_LiDAR                   = ros2message(pub.LiDAR);
+            msg_LiDAR.header.frame_id   = 'map';
+            msg_LiDAR                   = rosWriteXYZ(msg_LiDAR,(ptCloud_ps.Location));
+            msg_LiDAR                   = rosWriteIntensity(msg_LiDAR,(ptCloud_ps.Intensity));
             send(pub.LiDAR,msg_LiDAR);
         end
         
-        % Results from 3D DL model
-        L_bbox = G_bbox;
-        L_id = G_id;
-        L_cls = G_cls;
-        L_vel = G_vel;
-        L_isTracking = G_isTracking;
+        
         
         %-----------------------------------------------------------------------------------%
         %-------------------------------Object Detection Info-------------------------------%
         %-----------------------------------------------------------------------------------%
-        % Calculate Object Distance 
-        [Model, ModelInfo] = HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
-       
-        % Calculate Object Velocity
-        [VelocityInfo, OrientInfo] = HelperComputeVelocity_KF(ModelInfo);
+        % Results from 3D DL model
+        L_bbox          = G_bbox;
+        L_id            = G_id;
+        L_cls           = G_cls;
+        L_vel           = G_vel;
+        L_isTracking    = G_isTracking;
+
+        % Calculate Object Distance & Velocity
+        [Model, ModelInfo]          = HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
+        [VelocityInfo, OrientInfo]  = HelperComputeVelocity_KF(ModelInfo);
 
         %-----------------------------------------------------------------------------------%
         %-----------------------------------Visualization-----------------------------------%

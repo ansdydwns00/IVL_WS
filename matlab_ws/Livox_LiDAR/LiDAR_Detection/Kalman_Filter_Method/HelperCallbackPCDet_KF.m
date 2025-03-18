@@ -6,17 +6,17 @@ function HelperCallbackPCDet_KF(msg)
     global G_vel
     global G_isTracking
 
-    G_bbox = [];
-    G_id = {};
-    G_cls = {};
-    G_vel = [];
-    G_isTracking = []; 
+    G_bbox          = [];
+    G_id            = {};
+    G_cls           = {};
+    G_vel           = [];
+    G_isTracking    = []; 
 
-    bbox_tmp = [];
-    id_tmp = {};
-    cls_tmp = {};
-    vel_tmp = [];
-    isTracking_tmp = [];
+    bbox_tmp        = [];
+    id_tmp          = {};
+    cls_tmp         = {};
+    vel_tmp         = [];
+    isTracking_tmp  = [];
 
 
     % number of detections 
@@ -62,10 +62,10 @@ function HelperCallbackPCDet_KF(msg)
         isTracking_tmp{i} = msg.detections(i).is_tracking;
     end
 
-    G_bbox = bbox_tmp;
-    G_id = id_tmp';
-    G_cls = cls_tmp';
-    G_vel = vel_tmp;
-    G_isTracking = isTracking_tmp';
+    G_bbox          = bbox_tmp;
+    G_id            = id_tmp';
+    G_cls           = cls_tmp';
+    G_vel           = vel_tmp;
+    G_isTracking    = isTracking_tmp';
     
 end

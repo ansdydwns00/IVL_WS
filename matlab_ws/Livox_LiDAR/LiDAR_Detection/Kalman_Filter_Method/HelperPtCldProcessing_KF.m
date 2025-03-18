@@ -2,7 +2,7 @@ function ptCld = HelperPtCldProcessing_KF(pt,roi,gridStep)
     
     % pointCloud ROI 
     indices = findPointsInROI(pt, roi);
-    ptCld = select(pt, indices);
+    ptCld   = select(pt, indices);
     
     % pointCloud Downsampling
     % ptCld = pcdownsample(ptCld,"gridAverage",gridStep);
