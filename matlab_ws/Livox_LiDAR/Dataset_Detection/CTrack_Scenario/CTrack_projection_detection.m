@@ -8,6 +8,12 @@ global G_cls
 global G_vel
 global G_isTracking
 
+G_bbox = [];
+G_id = {};
+G_cls = {};
+G_vel = [];
+G_isTracking = []; 
+
 
 % Create a node for connection between MATLAB and ROS2
 Pub_Node = ros2node("/IVL_Pub");
@@ -23,43 +29,54 @@ sub.lr_detection = ros2subscriber(Sub_Node,"/lr_detections","vision_msgs/Detecti
 %% 
 
 
-% test1014/sina1/set1
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina1/set1/rosbag2_2024_10_14-15_33_06_0.db3';
-% % test1014/sina1/set2
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina1/set2/rosbag2_2024_10_14-15_34_15_0.db3';
+%-----------------------------------------------------------------------------------%
+% 충북대 자율주행 테스트베드(c-Track) bag 파일 - 연구실 노트북 용   
+%-----------------------------------------------------------------------------------%
 
- 
-% % test1014/sina2/set1
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina2/set1/rosbag2_2024_10_14-15_36_49_0.db3';
-% % test1014/sina2/set2
-filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina2/set2/rosbag2_2024_10_14-15_37_45_0.db3';
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina1/set1/rosbag2_2024_10_14-15_33_06_0.db3'; % test1014/sina1/set1
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina1/set2/rosbag2_2024_10_14-15_34_15_0.db3'; % test1014/sina1/set2
+
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina2/set1/rosbag2_2024_10_14-15_36_49_0.db3'; % test1014/sina2/set1
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina2/set2/rosbag2_2024_10_14-15_37_45_0.db3'; % test1014/sina2/set2
+
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina3/set1/rosbag2_2024_10_14-15_39_26_0.db3'; % test1014/sina3/set1
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina3/set2/rosbag2_2024_10_14-15_40_12_0.db3'; % test1014/sina3/set2
+
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina4/set1/rosbag2_2024_10_14-15_41_27_0.db3'; % test1014/sina4/set1
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina5/set1/rosbag2_2024_10_14-15_42_51_0.db3'; % test1014/sina5/set1
+
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1015/set1/rosbag2_2024_10_15-16_15_00_0.db3';       % test1015/set1
+% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1015/set2/rosbag2_2024_10_15-16_15_56_0.db3';       % test1015/set2
 
 
-% % test1014/sina3/set1
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina3/set1/rosbag2_2024_10_14-15_39_26_0.db3';
-% % test1014/sina3/set2
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina3/set2/rosbag2_2024_10_14-15_40_12_0.db3';
+%-----------------------------------------------------------------------------------%
+% 충북대 자율주행 테스트베드(c-Track) bag 파일 - 연구실 PC 용   
+%-----------------------------------------------------------------------------------%
 
+% filePath = '/media/aiv/새 볼륨/CTrack/test_1014/sina1/set1/rosbag2_2024_10_14-15_33_06_0.db3'; % test1014/sina1/set1
+% filePath = '/media/aiv/새 볼륨/CTrack/test_1014/sina1/set2/rosbag2_2024_10_14-15_34_15_0.db3'; % test1014/sina1/set2
 
-% % test1014/sina4/set1
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina4/set1/rosbag2_2024_10_14-15_41_27_0.db3';
-% % test1014/sina5/set1
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1014/sina5/set1/rosbag2_2024_10_14-15_42_51_0.db3';
+% filePath = '/media/aiv/새 볼륨/CTrack/test_1014/sina2/set1/rosbag2_2024_10_14-15_36_49_0.db3'; % test1014/sina2/set1
+% filePath = '/media/aiv/새 볼륨/CTrack/test_1014/sina2/set2/rosbag2_2024_10_14-15_37_45_0.db3'; % test1014/sina2/set2
 
-% % test1015/set1
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1015/set1/rosbag2_2024_10_15-16_15_00_0.db3';
-% % test1015/set2
-% filePath = '/home/aiv/YongJun_ws_dataset/dataset/test_1015/set2/rosbag2_2024_10_15-16_15_56_0.db3';
+% filePath = '/media/aiv/새 볼륨/CTrack/test_1014/sina3/set1/rosbag2_2024_10_14-15_39_26_0.db3'; % test1014/sina3/set1
+% filePath = '/media/aiv/새 볼륨/CTrack/test_1014/sina3/set2/rosbag2_2024_10_14-15_40_12_0.db3'; % test1014/sina3/set2
 
-bagReader = ros2bagreader(filePath);
+% filePath = '/media/aiv/새 볼륨/CTrack/test_1014/sina4/set1/rosbag2_2024_10_14-15_41_27_0.db3'; % test1014/sina4/set1
+% filePath = '/media/aiv/새 볼륨/CTrack/test_1014/sina5/set1/rosbag2_2024_10_14-15_42_51_0.db3'; % test1014/sina5/set1
+
+filePath = '/media/aiv/새 볼륨/CTrack/test_1015/set1/rosbag2_2024_10_15-16_15_00_0.db3';       % test1015/set1
+% filePath = '/media/aiv/새 볼륨/CTrack/test_1015/set2/rosbag2_2024_10_15-16_15_56_0.db3';       % test1015/set2
+
 
 
 % lidar, camera 데이터 읽기
-lidar_bag = select(bagReader,"Topic","/livox/lidar");
-rgb_bag = select(bagReader,"Topic","/color/image_raw");
+bagReader   = ros2bagreader(filePath);
+lidar_bag   = select(bagReader,"Topic","/livox/lidar");
+rgb_bag     = select(bagReader,"Topic","/color/image_raw");
 
-lidar_msg = readMessages(lidar_bag);
-image_msg = readMessages(rgb_bag);
+lidar_msg   = readMessages(lidar_bag);
+image_msg   = readMessages(rgb_bag);
 
 lidar_sz = length(lidar_msg);
 image_sz = length(image_msg);
@@ -70,37 +87,39 @@ else
     view_sz = lidar_sz;
 end
 
-bbox = load("test1014-scene2-set2.mat");
+% Yolo 검출 정보 (frustum을 위한)
+bbox = load("test1015-scene1-set1.mat");
 bbox = bbox.data';
-%% 
-
-% Clear memory cache
-clear HelperDrawCuboid_KF
-
-
 
 %-----------------------------------------------------------------------------------%
 %-------------------------------Calibration Parameter-------------------------------%
 %-----------------------------------------------------------------------------------%
-% Load LiDAR-Camera Calibration parameter
-load('/home/aiv/YongJun_ws_dataset/dataset/cali.mat');
 
-focalLength = [cali.intrinsic_color.intrinsic_matrix(1,1),cali.intrinsic_color.intrinsic_matrix(2,2)];
-principalPoint = [cali.intrinsic_color.intrinsic_matrix(1,3),cali.intrinsic_color.intrinsic_matrix(2,3)];
-imageSize = [1080,1920];
-radialDist = cali.intrinsic_color.radial_distortion_coef;
-tangentialDist = cali.intrinsic_color.tangential_distortion_coef;
+% Load LiDAR-Camera Calibration parameter - 연구실 PC 용
+load('/media/aiv/새 볼륨/CTrack/cali.mat');
+% Load LiDAR-Camera Calibration parameter - 연구실 노트북 용
+% load('/home/aiv/YongJun_ws_dataset/dataset/cali.mat');
 
-R = cali.extrinsic_lidar2color(1:3,1:3);
-T = cali.extrinsic_lidar2color(1:3,4);
+focalLength     = [cali.intrinsic_color.intrinsic_matrix(1,1),cali.intrinsic_color.intrinsic_matrix(2,2)];
+principalPoint  = [cali.intrinsic_color.intrinsic_matrix(1,3),cali.intrinsic_color.intrinsic_matrix(2,3)];
+imageSize       = [1080,1920];
+radialDist      = cali.intrinsic_color.radial_distortion_coef;
+tangentialDist  = cali.intrinsic_color.tangential_distortion_coef;
 
-[U,~,V] = svd(R); % Singular Value Decomposition (SVD)
-R_orthogonal = U * V';
+R               = cali.extrinsic_lidar2color(1:3,1:3);
+T               = cali.extrinsic_lidar2color(1:3,4);
 
-scene_camParams = cameraIntrinsics(focalLength,principalPoint,imageSize,"RadialDistortion",radialDist,"TangentialDistortion",tangentialDist);
-scene_lidarToCam = rigidtform3d(R_orthogonal,T);
-scene_camToLidar = invert(scene_lidarToCam);
-%-----------------------------------------------------------------------------------%
+[U,~,V]         = svd(R); % Singular Value Decomposition (SVD)
+R_orthogonal    = U * V';
+
+scene_camParams     = cameraIntrinsics(focalLength,principalPoint,imageSize,"RadialDistortion",radialDist,"TangentialDistortion",tangentialDist);
+scene_lidarToCam    = rigidtform3d(R_orthogonal,T);
+scene_camToLidar    = invert(scene_lidarToCam);
+
+%% 
+
+% Clear memory cache
+clear HelperDrawCuboid_KF
 
 
 
@@ -117,7 +136,7 @@ zmin = -2;      zmax = 1.5;
 player = pcplayer([xmin xmax],[ymin ymax],[zmin zmax],"ColorSource","X","MarkerSize",2);
 
 % image viewer
-% vPlayer = vision.DeployableVideoPlayer;
+vPlayer = vision.DeployableVideoPlayer;
 
 
 G_bbox = [];
@@ -146,12 +165,18 @@ i = 1;
 
 
 while true
-    
+    % Load point cloud
     ptCloud = pointCloud(rosReadXYZ(lidar_msg{i,1}),"Intensity",zeros(size(rosReadXYZ(lidar_msg{i,1}),1),1));
+    
+    % Preprocessing point clound (ROI, Downsampling, remove ground)
     ptCloud_ps = HelperPtCldProcessing_KF(ptCloud,roi,gridStep); 
+    
+    % Load RGB image
     img = rosReadImage(image_msg{i,1}); 
+    
+    % Read Yolo Detection Info
     [l_bboxes, ~, ~] = scenario_test_bbox(bbox{i,1});
-    i = i + 1;
+    
 
     if ~isempty(l_bboxes) && ~isempty(ptCloud_ps.Location)
         
@@ -191,41 +216,44 @@ while true
        
         % Create a new point cloud with the combined points and intensities
         projPtCld = pointCloud(allPointsInBbox,"Intensity",allIntensityInBbox);
-        
-        % upsampled_ptCld = upSampling(projPtCld);
+       
 
         % Publish the point cloud to the ROS topic
-        msg_LiDAR = ros2message(pub.LiDAR);
-        msg_LiDAR.header.frame_id = 'map';
-        msg_LiDAR = rosWriteXYZ(msg_LiDAR,projPtCld.Location);
-        msg_LiDAR = rosWriteIntensity(msg_LiDAR,projPtCld.Intensity);
+        msg_LiDAR                   = ros2message(pub.LiDAR);
+        msg_LiDAR.header.frame_id   = 'map';
+        msg_LiDAR                   = rosWriteXYZ(msg_LiDAR,projPtCld.Location);
+        msg_LiDAR                   = rosWriteIntensity(msg_LiDAR,projPtCld.Intensity);
         send(pub.LiDAR,msg_LiDAR);
+        
+        pause(0.04)
+
+        i = i + 1;
 
         %-----------------------------------------------------------------------------------%
         %-------------------------------Object Detection Info-------------------------------%
         %-----------------------------------------------------------------------------------%
         % Results from 3D DL model
-        pause(0.04)
-        L_bbox = G_bbox;
-        L_id = G_id;
-        L_cls = G_cls;
-        L_vel = G_vel;
-        L_isTracking = G_isTracking;
-
+        L_bbox          = G_bbox;
+        L_id            = G_id;
+        L_cls           = G_cls;
+        L_vel           = G_vel;
+        L_isTracking    = G_isTracking;
+        
+       
         % Calculate Object Distance & Velocity 
-        [Model, ModelInfo] = HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
-        [VelocityInfo, OrientInfo] = HelperComputeVelocity_KF(ModelInfo);
+        [Model, ModelInfo]          = HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
+        [VelocityInfo, OrientInfo]  = HelperComputeVelocity_KF(ModelInfo);
     end
     
     %-----------------------------------------------------------------------------------%
     %-----------------------------------Visualization-----------------------------------%
     %-----------------------------------------------------------------------------------%
     % Display image results with bounding boxes and projected points
-    % if ~isempty(l_bboxes)
-    %     img = insertObjectAnnotation(img,"rectangle",l_bboxes, strcat({'Class:'},string(zeros(size(l_bboxes,1),1))'));
-    %     img = insertShape(img, "filled-circle", [imPts(pointsInBboxMask, 1), imPts(pointsInBboxMask, 2), repmat(2, sum(pointsInBboxMask), 1)]);
-    % end
-    % vPlayer.step(img)
+    if ~isempty(l_bboxes)
+        img = insertObjectAnnotation(img,"rectangle",l_bboxes, strcat({'Class:'},string(zeros(size(l_bboxes,1),1))'));
+        img = insertShape(img, "filled-circle", [imPts(pointsInBboxMask, 1), imPts(pointsInBboxMask, 2), repmat(2, sum(pointsInBboxMask), 1)]);
+    end
+    vPlayer.step(img)
 
     % Display detection results
     view(player,ptCloud)

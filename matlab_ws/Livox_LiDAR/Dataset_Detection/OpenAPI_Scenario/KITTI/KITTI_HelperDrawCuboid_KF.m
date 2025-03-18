@@ -49,7 +49,7 @@ if isempty(idBBoxMap)
     idFrameCounterMap = containers.Map('KeyType', 'char', 'ValueType', 'double');
 end
 
-updateInterval = 30;  % 30프레임 주기로 크기 업데이트
+updateInterval = 10;  % 10프레임 주기로 크기 업데이트
 
 
 %------------------------------
@@ -132,13 +132,12 @@ for i = 1:size(cuboids, 1)
     vertices = (R * vertices')';
 
     % Translation to original location
-<<<<<<< HEAD
+
     vertices = vertices + [x_ctr, y_ctr, z_ctr];
 
-=======
-    vertices = vertices + [x_ctr, y_ctr, +z_ctr];
+
     
->>>>>>> f636c77805dab8e29d6d4a020552a4442534fff2
+
     % Index of the line connecting the vertices
     edges = [1,2; 2,3; 3,4; 4,1;    % up side
              5,6; 6,7; 7,8; 8,5;    % down side
@@ -151,8 +150,7 @@ for i = 1:size(cuboids, 1)
                  'ZData', vertices(edges(j,:), 3), ...
                  'Color', cuboidColor, 'Linewidth', 1, 'Tag', 'detBox');
     end
-<<<<<<< HEAD
-=======
+
     
     
     % % Notation Orientation
@@ -192,7 +190,7 @@ for i = 1:size(cuboids, 1)
 
 
     line(ax, 'XData', [0, 0.8],'YData', [0, 0],'Color', 'r', 'LineWidth', 1);
->>>>>>> f636c77805dab8e29d6d4a020552a4442534fff2
+
 
 
     %---- Notation Orientation

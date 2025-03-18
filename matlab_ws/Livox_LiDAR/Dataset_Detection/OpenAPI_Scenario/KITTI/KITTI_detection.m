@@ -23,7 +23,7 @@ Sub_Node = ros2node("/IVL_Sub");
 pub.LiDAR = ros2publisher(Pub_Node,"/livox/lidar","sensor_msgs/PointCloud2");
 
 % Create Subscribe Node
-sub.lr_detection = ros2subscriber(Sub_Node,"/lr_detections","vision_msgs/Detection3DArray",@HelperCallbackPCDet_KF);
+sub.lr_detection = ros2subscriber(Sub_Node,"/lr_detections","vision_msgs/Detection3DArray",@KITTI_HelperCallbackPCDet_KF);
 
 %% pointcloud dataset(.bin file)
 
@@ -33,8 +33,8 @@ clear KITTI_HelperDrawCuboid_KF
 
 
 % KITTI 2D Object Tracking Dataset (실행 전 '새 볼륨' 연결 필요) - 연구실 본체 용
-LiDAR_folder_path   = '/media/aiv/새 볼륨/kitti/kitti_2d/training/velodyne/0000';
-Cam_folder_path     = '/media/aiv/새 볼륨/kitti/kitti_2d/training/image_02/0000';
+LiDAR_folder_path   = '/media/aiv/새 볼륨/kitti/kitti_2d/training/velodyne/0001';
+Cam_folder_path     = '/media/aiv/새 볼륨/kitti/kitti_2d/training/image_02/0001';
 Calib_folder_path   = '/media/aiv/새 볼륨/kitti/kitti_2d/training/calib';
 Label_folder_path   = '/media/aiv/새 볼륨/kitti/kitti_2d/training/label_02';
 
@@ -63,9 +63,6 @@ zmin = -2;      zmax = 1.5;
 
 % pointCloud viewer
 player = pcplayer([xmin xmax],[ymin ymax],[zmin zmax],"ColorSource","X","MarkerSize",2);
-
-% image viewer
-% vPlayer = vision.DeployableVideoPlayer;
 
 
 G_bbox = [];
@@ -112,21 +109,15 @@ for i = 1:length(LiDAR_file_list)
     %-------------------------------Object Detection Info-------------------------------%
     %-----------------------------------------------------------------------------------%
     % Results from 3D DL model
-<<<<<<< HEAD
-    pause(0.4)
+    pause(0.3)
     L_bbox          = G_bbox;
     L_id            = G_id;
     L_cls           = G_cls;
     L_vel           = G_vel;
     L_isTracking    = G_isTracking;
-=======
-    pause(1)
-    L_bbox = G_bbox;
-    L_id = G_id;
-    L_cls = G_cls;
-    L_vel = G_vel;
-    L_isTracking = G_isTracking;
->>>>>>> f636c77805dab8e29d6d4a020552a4442534fff2
+
+
+
 
     % Calculate Object Distance & Velocity 
     [Model, ModelInfo]          = KITTI_HelperComputeDistance_KF(L_bbox, L_id, L_cls, L_vel, L_isTracking, ptCloud_ps);
